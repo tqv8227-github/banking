@@ -12,7 +12,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
 
 import com.banking.config.ApplicationProps;
-import com.banking.entities.TestStatic;
+//import com.banking.entities.TestStatic;
 
 @SpringBootApplication (exclude = { SecurityAutoConfiguration.class })
 public class BankingApplication {

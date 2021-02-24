@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.banking.config.ApplicationProps;
+import com.banking.config.DatabaseProps;
 import com.banking.entities.Account;
 import com.banking.repositories.AccountRepository;
 
@@ -37,6 +38,9 @@ public class AccountController {
 	@Autowired
 	private ApplicationProps appProps;
 	
+	@Autowired
+	private DatabaseProps databaseProps;
+	
 	public void printProps() {
 		// using Environment to get prop from application.properties
 		String userName = env.getProperty("spring.security.user.name");
@@ -47,6 +51,10 @@ public class AccountController {
 		// Using @ConfigurationProperties in ApplicationProps class
 		String propsStr = "Security: "+appProps.getSecurity()+". auth: "+appProps.getAuthentication()+". Env: "+appProps.getEnv()+". Menu: "+appProps.getMenu();
 		System.out.println(propsStr);
+		
+		// Using @ConfigurationProperties in ApplicationProps class
+		String dataBaseStr = "Database Infor. url: "+databaseProps.getUrl()+". user name: "+databaseProps.getUserName()+". password: "+databaseProps.getPassword()+". driver: "+databaseProps.getDriverClassName();
+		System.out.println(dataBaseStr);
 	}
 	
 	public AccountController(AccountRepository rep) {

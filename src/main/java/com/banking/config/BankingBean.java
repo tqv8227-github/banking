@@ -54,7 +54,12 @@ public class BankingBean {
 	}
 	
 	@Bean
-	public ApplicationProps getApplicationProp() {
+	public ApplicationProps getApplicationProps() {
 		return new ApplicationProps();
+	}
+	
+	@Bean
+	public DatabaseProps getDatabaseProps() {
+		return new DatabaseProps();
 	}
 }

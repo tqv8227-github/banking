@@ -6,7 +6,7 @@ public class TestStatic {
 	public static String VAR_2 = "Hello 2";
 	
 	public static String getVAR_1() {
-		return VAR_1;
+		return TestStatic.VAR_1;
 	}
 
 	public static void setVAR_1(String vAR_1) {

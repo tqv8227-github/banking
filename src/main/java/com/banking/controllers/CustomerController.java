@@ -23,10 +23,12 @@ import lombok.extern.slf4j.Slf4j;
 public class CustomerController {
 
 	private Customer customer;
+	private Customer customerII;
 	private CustomerRepository repo;
 	
-	public CustomerController(CustomerRepository repo) {
+	public CustomerController(CustomerRepository repo, Customer customer) {
 		this.repo = repo;
+		this.customerII = customer;
 	}
 
 	@GetMapping(value="list/all", produces="application/json")
