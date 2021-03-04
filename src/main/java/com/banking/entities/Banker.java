@@ -30,6 +30,9 @@ public class Banker {
 	@Column(name="MI")
 	private String mi;
 	
+//	@Column(name="bankertypeid")
+//	private int bankerTypeId;
+	
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="bankertypeid")
 	private BankerType bankerType;

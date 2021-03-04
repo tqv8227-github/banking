@@ -17,4 +17,7 @@ public interface CustomerTransactionRepository extends JpaRepository<CustomerTra
 	
 	@Query(value="select a.* from customertransaction a join account b on b.id=a.accountid where b.id=:id")
 	public List<CustomerTransaction> findByAccountId(@Param("id") int accountId);
+	
+	@Query(value="select a from CustomerTransaction a where a.id=:id")
+	public CustomerTransaction findById(@Param("id") int id);
 }
