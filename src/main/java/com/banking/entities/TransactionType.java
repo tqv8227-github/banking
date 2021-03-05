@@ -11,7 +11,7 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name="transactiontype")
+@Table(name="TRANSACTIONTYPE")
 public class TransactionType {
 
 	@Id
@@ -22,8 +22,8 @@ public class TransactionType {
 	@Column(name="Name")
 	private String name;
 	
-	public TransactionType() {
-		// TODO Auto-generated constructor stub
-	}
+//	public TransactionType() {
+//		// TODO Auto-generated constructor stub
+//	}
 
 }

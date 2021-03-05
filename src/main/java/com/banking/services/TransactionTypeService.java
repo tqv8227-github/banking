@@ -12,14 +12,20 @@ public class TransactionTypeService {
 
 	private TransactionTypeRepository repo;
 	
-	public TransactionTypeService(TransactionTypeRepository rep) {
+	public TransactionTypeService(TransactionTypeRepository repo) {
 		// TODO Auto-generated constructor stub
 		this.repo = repo;
 	}
 	
 	////////////////////////////////////////////////////////////////
 	public TransactionType findById(int id) {
-		return repo.findById(id);
+		try {
+			return repo.findById(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		
 	}
 	/////////////////////////////////////////////////////////////////
 	public List<TransactionType> findAll(){
@@ -28,6 +34,14 @@ public class TransactionTypeService {
 	////////////////////////////////////////////////////////////////
 	public void save(TransactionType transactionType) {
 		repo.saveAndFlush(transactionType);
+	}
+	////////////////////////////////////////////////////////////////
+	public TransactionType findByName(String name) {
+		return repo.findByName(name);
+	}
+	////////////////////////////////////////////////////////////////
+	public void delete(TransactionType transactionType) {
+		repo.delete(transactionType);
 	}
 
 }

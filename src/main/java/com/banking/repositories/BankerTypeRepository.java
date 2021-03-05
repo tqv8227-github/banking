@@ -12,4 +12,8 @@ public interface BankerTypeRepository extends JpaRepository<BankerType, Integer>
 
 	@Query(value="select a from BankerType a where a.id=:id")
 	public BankerType findById(@Param("id") int id);
+	
+	/////////////////////////////////////////////////////////////
+	@Query(value="select a from BankerType a where a.name=:name")
+	public BankerType findByName(@Param("name") String typeName);
 }

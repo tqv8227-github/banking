@@ -21,10 +21,15 @@ public class BankerTypeService {
 	}
 	
 	//////////////////////////////////////////////////////////
-	public BankerType findBankerById(int id){
+	public BankerType findById(int id){
 		return repo.findById(id);
 	}
 	
+	//////////////////////////////////////////////////////////
+	public BankerType findByName(String name){
+		return repo.findByName(name);
+	}
+		
 	///////////////////////////////////////////////////////////
 	public List<BankerType> findAll(){
 		return repo.findAll();
@@ -34,6 +39,10 @@ public class BankerTypeService {
 	public void save(BankerType bankerType) {
 		//repo.save(banker);
 		repo.saveAndFlush(bankerType);
+	}
+	//////////////////////////////////////////////////////////
+	public void delete(BankerType bankerType) {
+		repo.delete(bankerType);
 	}
 
 }

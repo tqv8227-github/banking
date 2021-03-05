@@ -11,5 +11,9 @@ import com.banking.entities.TransactionType;
 public interface TransactionTypeRepository extends JpaRepository<TransactionType, Integer> {
 	@Query(value="select a from TransactionType a where a.id=:id")
 	public TransactionType findById(@Param("id") int id);
+	
+	////////////////////////////////////////////////////////////////////
+	@Query(value="select a.* from TransactionType a where a.name=:name", nativeQuery=true)
+	public TransactionType findByName(@Param("name") String transactionTypeName);
 
 }
