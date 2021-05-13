@@ -2,6 +2,7 @@ package com.banking.controllers;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -50,16 +51,22 @@ public class AccountController {
 	
 	/////////////////////////////////////////////////////////////
 	@GetMapping(value="all", produces="application/json")
-	public ResponseEntity<List<Account>> getAccountList(){
+	public ResponseEntity<List<Account>> getAccountList() throws Exception{
+		log.debug("List all account");
 		List<Account> accountList = service.findAll();
 		
-		this.printProps();
-		return ResponseEntity.ok(accountList);
+		if (accountList == null || accountList.size() == 0 ) {
+			throw new Exception("No record found");
+		}
+		
+		//this.printProps();
+		return ResponseEntity.ok(accountList.stream().filter(a -> { return a.getAmount() > 40000;}).collect(Collectors.toList()));
 	}
 	///////////////////////////////////////////////////////////////
 	
 	@GetMapping(value="id/{number}", produces="application/json")
 	public ResponseEntity<Account> getAccount(@PathVariable (name="number") int accountNumber){
+		log.debug("List given account");
 		//Account account = rep.findById(accountNumber).get();
 		Account account = service.findById(accountNumber);
 		return ResponseEntity.ok(account);
@@ -68,6 +75,7 @@ public class AccountController {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	@GetMapping(value="customer/id/{number}", produces="application/json")
 	public ResponseEntity<List<Account>> getAccountForCustomer(@PathVariable (name="number") int customerId){
+		log.debug("List account by customer id");
 		//Account account = rep.findById(accountNumber).get();
 		List<Account> accountList = service.findByCustomerId(customerId);
 		return ResponseEntity.ok(accountList);

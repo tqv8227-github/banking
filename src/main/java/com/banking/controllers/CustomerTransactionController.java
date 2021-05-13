@@ -53,7 +53,6 @@ public class CustomerTransactionController {
 
 		//response.addCookie(new Cookie("test", "test"));
 		//response.addHeader("MyHeader", "Hello World");
-
 		//return ResponseEntity.ok().header("MyHeader2","Hello world 2.").body(transactionList);
 		return  ResponseEntity.ok(transactionList);
 	}

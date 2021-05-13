@@ -32,11 +32,11 @@ public class Account {
 //	private int customerId;
 	
 	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="accounttypeid")
+	@JoinColumn(name="accounttypeid", nullable=false)
 	private AccountType accountType;
 	
 	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="customerid")
+	@JoinColumn(name="customerid", nullable=false)
 	private Customer customer;
 	
 	public Account() {
