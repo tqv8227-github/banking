@@ -3,6 +3,7 @@ package com.banking.repositories;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -16,11 +17,12 @@ import com.banking.entities.CustomerAccountViewRowMapper;
 @Repository
 public class AccountRepositoryUsingJdbcTemplate {
 
+	@Autowired
 	private JdbcTemplate template;
 	
-	public AccountRepositoryUsingJdbcTemplate(JdbcTemplate template) {
-		this.template = template;
-	}
+//	public AccountRepositoryUsingJdbcTemplate(JdbcTemplate template) {
+//		this.template = template;
+//	}
 	////////////////////////////////////////////////////////////////////
 	public List<CustomerAccountView> getAccountViewsForCustIdList(List<Integer> custIdList){
 		//SqlParameterSource params = new MapSqlParameterSource("custList", custIdList);
