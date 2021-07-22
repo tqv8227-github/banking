@@ -52,5 +52,10 @@ public class AccountService {
 			throw new Exception("Account does not exist.");
 		}
 	}
+	////////////////////////////////////////////////////////////
+	public List<Account> findByCustomerIdAndAccountTypeId(int custId, int acctTypeId){
+		List<Account> accountList = repo.findByCustomerIdAndAccountTypeId(custId, acctTypeId);
+		return accountList;
+	}
 
 }

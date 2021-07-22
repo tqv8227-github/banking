@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.banking.entities.Customer;
+import com.banking.entities.CustomerAccountView;
+import com.banking.repositories.AccountRepositoryUsingJdbcTemplate;
 import com.banking.repositories.CustomerRepository;
+import com.banking.services.CustomerService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,56 +28,78 @@ public class CustomerController {
 	private Customer customer;
 	private Customer customerII;
 	private CustomerRepository repo;
+	private AccountRepositoryUsingJdbcTemplate jdbcTemplate;
+	private CustomerService service;
 	
-	public CustomerController(CustomerRepository repo, Customer customer) {
+	public CustomerController(CustomerRepository repo, Customer customer, CustomerService service, AccountRepositoryUsingJdbcTemplate jdbcTemplate) {
 		this.repo = repo;
 		this.customerII = customer;
+		this.service = service;
+		this.jdbcTemplate = jdbcTemplate;
 	}
-
+	
+	//////////////////////////////////////////////////////////////////////////////////
 	@GetMapping(value="list/all", produces="application/json")
-	public ResponseEntity<List<Customer>> getAllCustomers(){	
-		List<Customer> customerList = repo.findAll();
+	public ResponseEntity<List<Customer>> getAllCustomers() throws Exception{	
+		List<Customer> customerList = service.findAll();
 		return ResponseEntity.ok().body(customerList);
 	}
-	
-	@GetMapping(value="list/id/{id}", produces="application/json")
-	public ResponseEntity<Customer> getCustomerById(@PathVariable("id") int customerId){
-		return ResponseEntity.ok(repo.findById(customerId));
+	////////////////////////////////////////////////////////////////////////////////////
+	@GetMapping(value="id/{id}", produces="application/json")
+	public ResponseEntity<Customer> getCustomerById(@PathVariable("id") int customerId) throws Exception{
+		return ResponseEntity.ok(service.findById(customerId));
 	}
-	
+	/////////////////////////////////////////////////////////////////////////////////////////
 	@GetMapping(value="list/lastname/{lastname}", produces="application/json")
-	public ResponseEntity<List<Customer>> getCustomerByLastName(@PathVariable("lastname") String lastName){
+	public ResponseEntity<List<Customer>> getCustomerByLastName(@PathVariable("lastname") String lastName) throws Exception{
 		return ResponseEntity.ok(repo.findByLastNameContaining(lastName));
 	}
-	
+	///////////////////////////////////////////////////////////////////////////////////////
 	@GetMapping(value="list/firstname/{firstname}", produces="application/json")
-	public ResponseEntity<List<Customer>> getCustomerByFirstName(@PathVariable("firstname") String firstName){
+	public ResponseEntity<List<Customer>> getCustomerByFirstName(@PathVariable("firstname") String firstName) throws Exception{
 		return ResponseEntity.ok(repo.findByFirstNameContaining(firstName));
 	}
-	
+	////////////////////////////////////////////////////////////////////////////////////////
 	@GetMapping(value="list/fullname", produces="application/json")
-	public ResponseEntity<List<Customer>> getCustomerByFullName(@RequestParam(value="firstName", required=true) String firstName, @RequestParam(value="lastName", required=true) String lastName){
+	public ResponseEntity<List<Customer>> getCustomerByFullName(@RequestParam(value="firstName", required=true) String firstName, 
+																@RequestParam(value="lastName", required=true) String lastName) throws Exception {
 		List<Customer> custList = repo.findByFirstNameContainingAndLastNameContaining(firstName, lastName);
-		return ResponseEntity.ok(custList);
+		return ResponseEntity.status(200).body(custList);
 	}
-	
-	@PostMapping(value="add/user", produces="application/json", consumes="application/json")
-	public Customer addNewCustomer(@RequestBody Customer newCustomer) {
-		Customer customer = new Customer();		
-		if (newCustomer != null) {
-			customer = repo.save(newCustomer);
+	/////////////////////////////////////////////////////////////////////////////////////
+	@GetMapping(value="view/account/list", produces="application/json")
+	public ResponseEntity<List<CustomerAccountView>> getAccountView(@RequestParam List<Integer> custIdList) throws Exception{
+		List<CustomerAccountView> custViewList = jdbcTemplate.getAccountViewsForCustIdList(custIdList);
+		
+		if (custViewList == null || custViewList.size()==0) {
+			throw new Exception("No records found...");
 		}
 		
-		return customer;
+		return ResponseEntity.status(200).body(custViewList);
 	}
-	
-	@PutMapping(value="update/user", produces="application/json")
-	public Customer updateUser(@RequestBody(required=true) Customer customer) {
-		Customer lCustomer = repo.findById(customer.getId());
+	/////////////////////////////////////////////////////////////////////////////////////
+	@PostMapping(value="add", produces="application/json", consumes="application/json")
+	public ResponseEntity<Customer> addNewCustomer(@RequestBody Customer newCustomer) throws Exception {
+		Customer customer = new Customer();		
+		if (newCustomer != null && newCustomer.getLastName() != null && newCustomer.getFirstName() != null) {
+			customer = repo.save(newCustomer);
+		}else {
+			throw new Exception("Error: Please validate First name and Last Name.");
+		}
 		
-		if (lCustomer != null) {
+		return ResponseEntity.ok(customer);
+	}
+	/////////////////////////////////////////////////////////////////////////////////
+	@PutMapping(value="update", produces="application/json")
+	public ResponseEntity<Customer> updateUser(@RequestBody(required=true) Customer customer) throws Exception {
+		Customer lCustomer = service.findById(customer.getId());
+		
+		if (lCustomer != null && lCustomer.getLastName() != null && lCustomer.getFirstName() != null) {
 			lCustomer = repo.save(customer);	
-		}		
-		return lCustomer;
+		}else {
+			throw new Exception("Error: Customer is not found");
+		}
+		
+		return ResponseEntity.ok(lCustomer);
 	}
 }

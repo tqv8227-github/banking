@@ -8,6 +8,7 @@ import com.banking.entities.AccountType;
 import com.banking.entities.Banker;
 import com.banking.entities.BankerType;
 import com.banking.entities.Customer;
+import com.banking.entities.CustomerAccountInfo;
 import com.banking.entities.CustomerTransaction;
 import com.banking.entities.TestStatic;
 import com.banking.entities.TransactionType;
@@ -67,6 +68,11 @@ public class BankingBean {
 	@Bean(name="static")
 	public TestStatic getTestStatic() {
 		return new TestStatic();
+	}
+	////////////////////////////////////////////////////////
+	@Bean
+	public CustomerAccountInfo getCustAccountInfo() {
+		return new CustomerAccountInfo();
 	}
 	
 }
